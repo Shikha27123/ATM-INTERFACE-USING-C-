@@ -1,0 +1,155 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Account {
+private:
+    string accountNumber;
+    string pin;
+    double balance;
+
+public:
+    Account(string accountNumber, string pin, double balance) {
+        this->accountNumber = accountNumber;
+        this->pin = pin;
+        this->balance = balance;
+    }
+
+    string getAccountNumber() {
+        return accountNumber;
+    }
+
+    string getPin() {
+        return pin;
+    }
+
+    double getBalance() {
+        return balance;
+    }
+
+    void setBalance(double balance) {
+        this->balance = balance;
+    }
+};
+
+vector<Account> accounts;
+
+void createAccount() {
+    string accountNumber, pin;
+    double balance;
+
+    cout << "Enter account number: ";
+    cin >> accountNumber;
+    cout << "Enter pin: ";
+    cin >> pin;
+    cout << "Enter initial balance: ";
+    cin >> balance;
+
+    Account newAccount(accountNumber, pin, balance);
+    accounts.push_back(newAccount);
+
+    cout << "Account created successfully!" << endl;
+}
+
+void deposit() {
+    string accountNumber, pin;
+    double amount;
+
+    cout << "Enter account number: ";
+    cin >> accountNumber;
+    cout << "Enter pin: ";
+    cin >> pin;
+    cout << "Enter amount to deposit: ";
+    cin >> amount;
+
+    for (Account &account : accounts) {
+        if (account.getAccountNumber() == accountNumber && account.getPin() == pin) {
+            account.setBalance(account.getBalance() + amount);
+            cout << "Deposit successful!" << endl;
+            return;
+        }
+    }
+
+    cout << "Invalid account number or pin!" << endl;
+}
+
+void withdraw() {
+    string accountNumber, pin;
+    double amount;
+
+    cout << "Enter account number: ";
+    cin >> accountNumber;
+    cout << "Enter pin: ";
+    cin >> pin;
+    cout << "Enter amount to withdraw: ";
+    cin >> amount;
+
+    for (Account &account : accounts) {
+        if (account.getAccountNumber() == accountNumber && account.getPin() == pin) {
+            if (account.getBalance() >= amount) {
+                account.setBalance(account.getBalance() - amount);
+                cout << "Withdrawal successful!" << endl;
+            } else {
+                cout << "Insufficient balance!" << endl;
+            }
+            return;
+        }
+    }
+
+    cout << "Invalid account number or pin!" << endl;
+}
+
+void checkBalance() {
+    string accountNumber, pin;
+
+    cout << "Enter account number: ";
+    cin >> accountNumber;
+    cout << "Enter pin: ";
+    cin >> pin;
+
+    for (Account &account : accounts) {
+        if (account.getAccountNumber() == accountNumber && account.getPin() == pin) {
+            cout << "Your balance is: " << account.getBalance() << endl;
+            return;
+        }
+    }
+
+    cout << "Invalid account number or pin!" << endl;
+}
+
+int main() {
+    int choice;
+
+    while (true) {
+        cout << "1. Create account" << endl;
+        cout << "2. Deposit" << endl;
+        cout << "3. Withdraw" << endl;
+        cout << "4. Check balance" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                deposit();
+                break;
+            case 3:
+                withdraw();
+                break;
+            case 4:
+                checkBalance();
+                break;
+            case 5:
+                return 0;
+            default:
+                cout << "Invalid choice!" << endl;
+        }
+    }
+
+    return 0;
+}
